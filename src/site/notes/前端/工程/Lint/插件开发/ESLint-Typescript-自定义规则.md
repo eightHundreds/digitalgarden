@@ -3,9 +3,10 @@
 ---
 
 
-``` ad-important
-您应该熟悉[ESLint's developer guide](https://eslint.org/docs/developer-guide) 和 [Development > Architecture](./architecture/asts) 在编写自定义规则之前.
-```
+> [!important]
+> 您应该熟悉[ESLint's developer guide](https://eslint.org/docs/developer-guide) 和 [Development > Architecture](./architecture/asts) 在编写自定义规则之前.
+
+
 
 只要您在 ESLint 配置中使用`@typescript-eslint/parser`作为`parser`, 自定义 ESLint 规则通常以相同的方式为 JavaScript 和 TypeScript 代码工作。
 自定义规则编写的主要三个变化是:
