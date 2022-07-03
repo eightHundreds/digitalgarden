@@ -1,12 +1,10 @@
 ---
-{"dg-publish":true,"permalink":"///lint//es-lint-typescript/","dgHomeLink":true,"dgPassFrontmatter":false}
+{"dg-publish":true,"dg-permalink":"ts-eslint/plugin/custom-rule","permalink":"/ts-eslint/plugin/custom-rule/","dgHomeLink":true,"dgPassFrontmatter":false}
 ---
 
 
 > [!important]
 > 您应该熟悉[ESLint's developer guide](https://eslint.org/docs/developer-guide) 和 [Development > Architecture](./architecture/asts) 在编写自定义规则之前.
-
-
 
 只要您在 ESLint 配置中使用`@typescript-eslint/parser`作为`parser`, 自定义 ESLint 规则通常以相同的方式为 JavaScript 和 TypeScript 代码工作。
 自定义规则编写的主要三个变化是:
@@ -20,13 +18,11 @@
  `@typescript-eslint/utils` 可以作为`eslint` 的替代包，它导出所有相同的对象和类型，同时支持 `typescript-eslint`.
 它还导出大多数自定义 typescript-eslint 规则倾向于使用的常见实用程序函数和常量。
 
+> [!warning]
+> `@types/eslint`类型基于`@types/estree`，并且不识别typescript-eslint节点和属性。
+> 在 TypeScript 中编写自定义 typescript-eslint 规则时，通常不需要从 `eslint` 导入。
 
-:::caution
-`@types/eslint` types are based on `@types/estree` and do not recognize typescript-eslint nodes and properties.
-You should generally not need to import from `eslint` when writing custom typescript-eslint rules in TypeScript.
-:::
-
-### `RuleCreator`
+### RuleCreator
 
 The recommended way to create custom ESLint rules that make use of typescript-eslint features and/or syntax is with the `ESLintUtils.RuleCreator` function exported by `@typescript-eslint/utils`.
 
