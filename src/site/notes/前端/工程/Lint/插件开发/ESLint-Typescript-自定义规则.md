@@ -79,8 +79,6 @@ export const rule = createRule({
 - `MessageIds`: 用于report的字符串文本消息 ID 的并集
 - `Options`: 用户可以为规则配置的选项（默认情况下为`[]`）
 
-If the rule is able to take in rule options, declare them as a tuple type containing a single object of rule options:
-
 
 如果规则支持规则选项，请将其声明为包含规则选项的单个对象的元组类型:
 
@@ -152,13 +150,14 @@ export const rule = createRule({
 
 ### Node Types
 
-TypeScript types for nodes exist in a `TSESTree` namespace exported by `@typescript-eslint/utils`.
-The above rule body could be better written in TypeScript with a type annotation on the `node`:
+节点的 TypeScript 类型存在于由 `@typescript-eslint/utils` 导出的 `TSESTree` 命名空间中。
 
-An `AST_NODE_TYPES` enum is exported as well to hold the values for AST node `type` properties.
-`TSESTree.Node` is available as union type that uses its `type` member as a discriminant.
+上面的规则体可以用TypeScript更好地编写，并在`node`上添加类型注释:
 
-For example, checking `node.type` can narrow down the type of the `node`:
+还会导出`AST_NODE_TYPES`枚举以保存 AST 节点`type`属性的值。
+`TSESTree.Node` 可用作联合类型，其`type`成员用作判别变量。
+
+例如，通过判断`node.type`可以缩小`node`的类型范围: 
 
 ```ts
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
@@ -178,11 +177,13 @@ export function describeNode(node: TSESTree.Node): string {
 ```
 
 ### Explicit Node Types
+显式节点类型
 
-Rule queries that use more features of [esquery](https://github.com/estools/esquery) such as targeting multiple node types may not be able to infer the type of the `node`.
-In that case, it is best to add an explicit type declaration.
+ [esquery](https://github.com/estools/esquery)规则查询的一些功能（如面向多个节点类型）可能无法推断出`node`的类型。
+在这种情况下，最好添加显式类型声明。
 
-This rule snippet targets name nodes of both function and interface declarations:
+
+此规则片段以函数和接口声明的名称节点为目标: 
 
 ```ts
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
@@ -207,23 +208,27 @@ export const rule = createRule({
 
 ## Type Checking
 
-:::tip
-Read TypeScript's [Compiler APIs > Using the Type Checker](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API#using-the-type-checker) section for how to use a program's type checker.
-:::
+> [!tip]
+> 建议阅读 [Compiler APIs > Using the Type Checker](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API#using-the-type-checker) 章节 了解如何使用type checker.
 
-The biggest addition typescript-eslint brings to ESLint rules is the ability to use TypeScript's type checker APIs.
+typescript-eslint 给 ESLint 规则带来的最大好处是能够使用 TypeScript 的类型检查器 API。
 
 `@typescript-eslint/utils` exports an `ESLintUtils` namespace containing a `getParserServices` function that takes in an ESLint context and returns a `parserServices` object.
 
-That `parserServices` object contains:
 
-- `program`: A full TypeScript `ts.Program` object
-- `esTreeNodeToTSNodeMap`: Map of `@typescript-eslint/estree` `TSESTree.Node` nodes to their TypeScript `ts.Node` equivalents
-- `tsNodeToESTreeNodeMap`: Map of TypeScript `ts.Node` nodes to their `@typescript-eslint/estree` `TSESTree.Node` equivalents
+`@typescript-eslint/utils` 导出一个 `ESLintUtils` 命名空间，其中包含一个 `getParserServices` 函数，该函数接受一个 ESLint 上下文并返回一个 `` 对象。
 
-By mapping from ESTree nodes to TypeScript nodes and retrieving the TypeScript program from the parser services, rules are able to ask TypeScript for full type information on those nodes.
+该`parserServices`对象包含:
 
-This rule bans for-of looping over an enum by using the type-checker via typescript-eslint and TypeScript APIs:
+- `program`: TypeScript `ts.Program` 对象
+- `esTreeNodeToTSNodeMap`:   `@typescript-eslint/estree` `TSESTree.Node` node 到其 TypeScript `ts.Node` node的映射。
+- `tsNodeToESTreeNodeMap`: TypeScript `ts.Node` node 到其 `@typescript-eslint/estree` `TSESTree.Node` 的映射
+
+
+通过从 ESTree node映射到 TypeScript node并从parser服务中检索 TypeScript program，规则能够要求 TypeScript 提供有关这些node的完整类型信息。
+
+
+此规则禁止在枚举上进行循环（通过 typescript-eslint 和 TypeScript API 类型检查器）:
 
 ```ts
 import { ESLintUtils } from '@typescript-eslint/utils';
