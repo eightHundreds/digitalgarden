@@ -24,13 +24,14 @@
 
 ### RuleCreator
 
-The recommended way to create custom ESLint rules that make use of typescript-eslint features and/or syntax is with the `ESLintUtils.RuleCreator` function exported by `@typescript-eslint/utils`.
+创建自定义 ESLint 规则的推荐方法是使用 `ESLintUtils.RuleCreator` 函数，该函数由`@typescript-eslint/utils`导出。
 
-It takes in a function that transforms a rule name into its documentation URL, then returns a function that takes in a rule module object.
-`RuleCreator` will infer the allowed message IDs the rule is allowed to emit from the provided `meta.messages` object.
+它接收一个函数，该函数将规则名称转换为其文档 URL。然后返回一个接收规则模块对象的函数。
 
-This rule bans function declarations that start with a lower-case letter:
+`RuleCreator`将从提供的`meta.messages`对象推断出允许使用的message ID。(就是在调用report时能智能提示)
 
+
+下面这个规则作用是禁止以小写字母开头的函数声明:
 ```ts
 import { ESLintUtils } from '@typescript-eslint/utils';
 
@@ -71,13 +72,17 @@ export const rule = createRule({
 });
 ```
 
-`RuleCreator` rule creator functions return rules typed as the `RuleModule` interface exported by `@typescript-eslint/utils`.
-It allows specifying generics for:
 
-- `MessageIds`: a union of string literal message IDs that may be reported
-- `Options`: what options users may configure for the rule (by default, `[]`)
+`RuleCreator`规则创建者函数返回类型为`RuleModule`规则对象，`RuleModule`由`@typescript-eslint/utils`导出。
+它允许指定泛型:
+
+- `MessageIds`: 用于report的字符串文本消息 ID 的并集
+- `Options`: 用户可以为规则配置的选项（默认情况下为`[]`）
 
 If the rule is able to take in rule options, declare them as a tuple type containing a single object of rule options:
+
+
+如果规则支持规则选项，请将其声明为包含规则选项的单个对象的元组类型:
 
 ```ts
 import { ESLintUtils } from '@typescript-eslint/utils';
@@ -98,8 +103,9 @@ export const rule = createRule<Options, MessageIds>({
 
 ### Undocumented Rules
 
-Although it is generally not recommended to create custom rules without documentation, if you are sure you want to do this you can use the `ESLintUtils.RuleCreator.withoutDocs` function to directly create a rule.
-It applies the same type inference as the `createRule`s above without enforcing a documentation URL.
+尽管通常不建议在没有文档的情况下创建自定义规则，但如果确定要执行此操作，则可以使用`ESLintUtils.RuleCreator.withoutDocs`函数直接创建规则。
+
+它跟上面的`createRule`有相同的类型，但不强制需要文档URL
 
 ```ts
 import { ESLintUtils } from '@typescript-eslint/utils';
@@ -113,19 +119,20 @@ export const rule = ESLintUtils.RuleCreator.withoutDocs({
   },
 });
 ```
-
-:::caution
-We recommend any custom ESLint rule include a descriptive error message and link to informative documentation.
-:::
+(译注: 这个方法创建规则时不允许传入`name`, 但是规则最后会放到一个大对象里, 此时的key就是name)
+> [!warning]
+> 建议任何自定义 ESLint 规则都包含描述性错误消息和指向信息性文档的链接。
 
 ## AST Extensions
 
-`@typescript-eslint/estree` creates AST nodes for TypeScript syntax with names that begin with `TS`, such as `TSInterfaceDeclaration` and `TSTypeAnnotation`.
-These nodes are treated just like any other AST node.
-You can query for them in your rule selectors.
 
-This version of the above rule instead bans interface declaration names that start with a lower-case letter:
+`@typescript-eslint/estree` 为 TypeScript 语法创建 AST 节点，其名称以 `TS` 开头，例如 `TSInterfaceDelaration` 和 `TSTypeAnnotation`。
 
+这些节点的处理方式与任何其他 AST 节点相同。
+您可以在规则选择器中查询它们。
+
+
+此版本的规则改为禁止以小写字母开头的接口声明名称:
 ```ts
 import { ESLintUtils } from '@typescript-eslint/utils';
 
