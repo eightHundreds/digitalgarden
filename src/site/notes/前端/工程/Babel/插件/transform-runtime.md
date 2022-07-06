@@ -8,7 +8,7 @@
 默认情况下，在babel编译过程中会插入一些辅助代码来实现一些语法。并且是每个文件都会插入。存在重复代码。
 我们可以借助`@babel/runtime`和`@babel/plugin-transform-runtime`来减少这些代码。
 
-- `@babel/runtime`包含了 `regenerator`(实现迭代器语法)，和其他helper方法
+- `@babel/runtime`包含了 `regenerator`(实现生成器语法)，和其他helper方法
 - `@babel/plugin-transform-runtime`用在编译时的插件，将辅助代码改成从`@babel/runtime`  import helper代码
 
 # Pollyfill
