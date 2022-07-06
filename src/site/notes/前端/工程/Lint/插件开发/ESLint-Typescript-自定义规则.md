@@ -302,8 +302,8 @@ ruleTester.run('my-rule', rule, {
 
 ### Testing Typed Rules
 
-For rules that do need type information, `parserOptions` must be passed in as well.
-Tests must have at least an absolute `tsconfigRootDir` path provided as well as a relative `project` path from that directory:
+对于确实需要类型信息的规则，还必须传入`parserOptions`。
+测试必须至少提供`tsconfigRootDir`的绝对路径以及该目录中`project`的相对路径
 
 ```ts
 import { ESLintUtils } from '@typescript-eslint/utils';
