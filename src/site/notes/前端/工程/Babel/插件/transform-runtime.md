@@ -95,7 +95,7 @@ runtime的版本。默认是`7.0.0`
       "@babel/plugin-transform-runtime",
       {
         "version": "^7.7.4",
-        "core": 3
+        "corejs": 3
       }
     ]
   ]
